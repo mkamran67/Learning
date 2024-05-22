@@ -4,9 +4,9 @@ import { Link } from 'expo-router';
 
 export default function index() {
   return (
-    <View className='flex-1 justify-center items-center'>
-      <Link href='/profile'>
-        <Text className='text-blue-600'>Go to Profile</Text>
+    <View className='items-center justify-center flex-1'>
+      <Link href='/home' style={{ color: 'blue' }}>
+        Go to Home
       </Link>
     </View>
   );
