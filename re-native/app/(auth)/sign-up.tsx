@@ -1,12 +1,14 @@
-import { View, Text, ScrollView, Image } from 'react-native';
+import { View, Text, ScrollView, Image, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { images } from '@/constants';
 import FormField from '@/components/FormField';
 import CustomButton from '@/components/CustomButton';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 
+import { createUser } from '../../lib/appwrite';
+import { parseSync } from '@babel/core';
 
 export default function SignUp() {
   const [form, setForm] = useState({
@@ -18,8 +20,33 @@ export default function SignUp() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submit = () => {
+  const submit = async () => {
+    if (!form.username || !form.email || !form.password) {
+      Alert.alert('Error', 'Please fill in all the fields.');
+      return;
+    }
 
+    if (form.password.length < 8) {
+      Alert.alert('Error', 'Password must be longer than 8 characters.');
+      return;
+    }
+
+    if (form.email !== form.confirmationEmail) {
+      Alert.alert('Error', "Emails don't match.");
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      const res = await createUser(form.email, form.password, form.username);
+
+
+      router.replace('/home');
+    } catch (err: any) {
+      Alert.alert('Error', err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
