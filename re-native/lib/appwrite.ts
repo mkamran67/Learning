@@ -77,7 +77,7 @@ export const signIn = async (email: string, password: string) => {
     if (currSession && currSession.status) {
       return currSession;
     } else {
-      const session = await account.createSession(email, password);
+      const session = await account.createEmailPasswordSession(email, password);
       return session;
     }
 

@@ -1,8 +1,9 @@
 import { View, Text, FlatList, TouchableOpacity, ImageBackground, Image } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Animatable from 'react-native-animatable';
 import { icons } from '@/constants';
-
+import { Video, ResizeMode, type AVPlaybackStatus } from 'expo-av';
+import { useVideoPlayer, VideoView } from 'expo-video';
 
 const zoomIn = {
   0: {
@@ -24,8 +25,24 @@ const zoomOut = {
 
 const TrendingItem = ({ activeItem, item }) => {
 
-  const [playing, setPlaying] = useState(false);
+  const [videoStatus, setVideoStatus] = useState<AVPlaybackStatus | null>(null);
+  console.log("file: Trending.tsx:29 -> videoStatus:", videoStatus);
 
+  const [isPlaying, setIsPlaying] = useState(true);
+  const player = useVideoPlayer(item.video, (player) => {
+    player.loop = true;
+    player.play();
+  });
+
+  useEffect(() => {
+    const subscription = player.addListener('playingChange', (isPlaying) => {
+      setIsPlaying(isPlaying);
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, [player]);
 
   return (
     <Animatable.View
@@ -35,15 +52,18 @@ const TrendingItem = ({ activeItem, item }) => {
       animation={activeItem === item.$id ? zoomIn : zoomOut}
     >
       {
-        playing ? (
-          <Text className='text-white'>
-            Playing
-          </Text>
+        isPlaying ? (
+          <VideoView
+            player={player}
+            className='w-52 h-72 rounded-[35px] mt-3 bg-white/10'
+            allowsFullscreen
+            nativeControls
+          />
         ) : (
           <TouchableOpacity
             className='relative items-center justify-center'
             activeOpacity={0.7}
-            onPress={() => setPlaying(true)}
+            onPress={() => setIsPlaying(true)}
           >
             <ImageBackground
               source={{ uri: item.thumbnail }}
