@@ -49,6 +49,9 @@ const TrendingItem = ({ activeItem, item }) => {
                 setIsPlaying(false);
               }
             }}
+            onError={(error) => {
+              console.log(error);
+            }}
           />
         ) : (
           <TouchableOpacity
