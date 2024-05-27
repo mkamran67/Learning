@@ -71,15 +71,15 @@ export const signIn = async (email: string, password: string) => {
   try {
     // check for existing sessions
 
-    const currSession = await account.get();
+    // const currSession = await account.get();
     // console.log(JSON.stringify(currSession, null, 2));
 
-    if (currSession && currSession.status) {
-      return currSession;
-    } else {
-      const session = await account.createEmailPasswordSession(email, password);
-      return session;
-    }
+    // if (currSession && currSession.status) {
+    //   return currSession;
+    // } else {
+    const session = await account.createEmailPasswordSession(email, password);
+    return session;
+    // }
 
   } catch (err: any) {
     console.log(err);
