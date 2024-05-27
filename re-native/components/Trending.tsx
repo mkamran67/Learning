@@ -24,7 +24,7 @@ const zoomOut = {
 
 const TrendingItem = ({ activeItem, item }) => {
 
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
 
 
   return (

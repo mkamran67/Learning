@@ -73,10 +73,10 @@ export const signIn = async (email: string, password: string) => {
 
     // const currSession = await account.get();
     // console.log(JSON.stringify(currSession, null, 2));
-
     // if (currSession && currSession.status) {
     //   return currSession;
     // } else {
+
     const session = await account.createEmailPasswordSession(email, password);
     return session;
     // }
