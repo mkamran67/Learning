@@ -1,8 +1,9 @@
-import { Text, FlatList, TouchableOpacity, ImageBackground, Image } from 'react-native';
-import React, { useState } from 'react';
+import { FlatList, TouchableOpacity, ImageBackground, Image, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import * as Animatable from 'react-native-animatable';
 import { icons } from '@/constants';
 import { Video, ResizeMode } from 'expo-av';
+// import { WebView } from 'react-native-webview';
 
 const zoomIn = {
   0: {
@@ -23,9 +24,29 @@ const zoomOut = {
 };
 
 const TrendingItem = ({ activeItem, item }) => {
+  const bunnyLink = 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4';
 
   const [isPlaying, setIsPlaying] = useState(false);
+  // // const video = React.useRef<any>(null);
 
+
+  // useEffect(() => {
+  //   if (isPlaying && video.current) {
+  //     video.current.playAsync();
+  //   }
+
+  // }, [isPlaying]);
+
+
+
+
+  // <View className="mt-3 overflow-hidden rounded-lg w-52 h-72 bg-black/10">
+  //           <WebView
+  //             className='w-full h-full bg-black/10'
+  //             javaScriptEnabled={true}
+  //             source={{ uri: item.video }}
+  //           />
+  //         </View>
 
   return (
     <Animatable.View
@@ -36,20 +57,21 @@ const TrendingItem = ({ activeItem, item }) => {
     >
       {
         isPlaying ? (
+
           <Video
-            source={{ uri: item.video }}
-            resizeMode={ResizeMode.CONTAIN}
+            // ref={video}
+            source={{ uri: bunnyLink }}
             className='w-52 h-72 rounded-[35px] mt-3 bg-white/10'
             useNativeControls
-            shouldPlay
-            onPlaybackStatusUpdate={(status) => {
-              console.log(status);
+            resizeMode={ResizeMode.CONTAIN}
+            onPlaybackStatusUpdate={status => {
               // @ts-ignore
               if (status.didJustFinish) {
                 setIsPlaying(false);
               }
             }}
             onError={(error) => {
+              // console.log(`\n ${item.video} \n`);
               console.log(error);
             }}
           />

@@ -1,9 +1,12 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { icons } from '@/constants';
+import { ResizeMode, Video } from 'expo-av';
 
 const VideoCard = ({ video: { title, thumbnail, video, creator: { username, avatar } } }) => {
-  const [play, setPlay] = useState(false);
+
+  const bunnyLink = 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4';
+  const [isPlaying, setIsPlaying] = useState(false);
 
 
   return (
@@ -24,9 +27,25 @@ const VideoCard = ({ video: { title, thumbnail, video, creator: { username, avat
         </View>
       </View>
       {
-        play ?
-          (<Text className='text-white'>Playing</Text>) :
-          (<TouchableOpacity activeOpacity={0.7} onPress={() => setPlay(true)} className='relative items-center justify-center w-full mt-3 h-60 rounded-xl'>
+        isPlaying ?
+          (<Video
+            // ref={video}
+            source={{ uri: bunnyLink }}
+            className='w-full h-72 bg-white/10'
+            useNativeControls
+            resizeMode={ResizeMode.CONTAIN}
+            onPlaybackStatusUpdate={status => {
+              // @ts-ignore
+              if (status.didJustFinish) {
+                setIsPlaying(false);
+              }
+            }}
+            onError={(error) => {
+              // console.log(`\n ${item.video} \n`);
+              console.log(error);
+            }}
+          />) :
+          (<TouchableOpacity activeOpacity={0.7} onPress={() => setIsPlaying(true)} className='relative items-center justify-center w-full mt-3 h-60 rounded-xl'>
             <Image source={{ uri: thumbnail }} className='w-full h-full mt-3 rounded-xl' resizeMode='cover' />
             <Image source={icons.play} className='absolute w-12 h-12' resizeMode='contain' />
           </TouchableOpacity>)
