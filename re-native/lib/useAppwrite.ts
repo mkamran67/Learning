@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { type Models } from "react-native-appwrite";
 
-const useAppwrite = (fn: () => any) => {
+
+type callbackFunction = () => any | ((query: string) => any);
+
+const useAppwrite = (fn: callbackFunction) => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<Models.Document[] | []>([]);
 
