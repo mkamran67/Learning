@@ -7,8 +7,9 @@ import FormField from '@/components/FormField';
 import CustomButton from '@/components/CustomButton';
 import { Link, router } from 'expo-router';
 
-import { createUser } from '../../lib/appwrite';
+import { createUser, getCurrentUser } from '../../lib/appwrite';
 import { parseSync } from '@babel/core';
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 export default function SignUp() {
   const [form, setForm] = useState({
@@ -17,6 +18,7 @@ export default function SignUp() {
     username: '',
     password: ''
   });
+  const { setUser, setIsLoggedIn } = useGlobalContext();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -38,8 +40,11 @@ export default function SignUp() {
 
     try {
       setIsSubmitting(true);
-      const res = await createUser(form.email, form.password, form.username);
+      const currUser = await createUser(form.email, form.password, form.username);
 
+      if (!currUser) throw Error;
+      setUser && setUser(currUser);
+      setIsLoggedIn && setIsLoggedIn(true);
 
       router.replace('/home');
     } catch (err: any) {

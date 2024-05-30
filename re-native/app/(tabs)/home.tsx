@@ -17,6 +17,9 @@ const Home = () => {
   const { data: posts, isLoading, refetch } = useAppwrite(getAllPosts);
   const { data: latestPosts, isLoading: latestLoaded, refetch: refetchLatest } = useAppwrite(getLatestPosts);
 
+  const bunnyLink = 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4';
+  const [isPlaying, setIsPlaying] = useState(false);
+
   const onRefresh = async () => {
     setRefreshing(true);
     // re-call videos

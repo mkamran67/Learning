@@ -9,20 +9,22 @@ type FormFieldProps = {
   handleChangeText: (e: string) => void;
   otherStyles?: string;
   keyboardType?: 'default' | 'email-address' | 'numeric';
+  textInputStyles?: string;
 };
 
 
-const FormField = ({ title, value, placeholder, handleChangeText, otherStyles, keyboardType }: FormFieldProps) => {
+const FormField = ({ title, value, placeholder, handleChangeText, otherStyles, keyboardType, textInputStyles }: FormFieldProps) => {
 
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <View className={`space-y-2 ${otherStyles}`}>
       <Text className='text-base text-gray-100 font-pmedium'>{title}</Text>
-      <View className='flex-row items-center w-full h-16 px-4 border-2 bg-black-100 rounded-2xl focus:border-secondary border-black-200'>
+      <View className='flex-row items-center w-full h-auto px-4 border-2 bg-black-100 rounded-2xl focus:border-secondary border-black-200'>
         <TextInput
-          className='flex-1 text-base text-white font-psemibold'
+          className={`flex-1 text-base text-white font-psemibold py-2 px-1 ${textInputStyles}`}
           value={value}
+          multiline
           placeholder={placeholder}
           placeholderTextColor='#7b7b8b'
           onChangeText={handleChangeText}
